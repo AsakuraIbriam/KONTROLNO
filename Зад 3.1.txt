@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+
+
+
+
+#define COUNT 3
+
+
+
+
+typedef struct node{
+    int data;
+    struct node *next;
+}sll_node;
+
+
+void pushElement(sll_node **head, Book item) {
+    
+    
+    
+    
+   sll_node *temp =  malloc(sizeof(sll_node));
+   temp->item = item;
+   temp->next = *head;
+   *head = temp;
+   
+   sll_node *temp = *head;
+   while(temp != NULL) {
+    temp = head->next;
+   }
+   temp->next = *head;
+}
+
+
+
+void freeList(sll_node **head){
+
+    sll_node *current = *head;
+
+    while(current != NULL) {
+        sll_node *temp = current;
+        current = current->next;
+        free(temp);
+    }
+    *head = NULL;
+
+}
+
+
+int main(int argc, char *argv[])
+{
+    
+    
+    int N;
+    printf("Enter N: ");
+    scanf("%d", &N);
+    
+    int num = 0;
+    while(N > 0) {
+        if(fgetc(stdin) != ' ') {
+            pushElement(&head, num);
+        }
+        
+        N--;
+    }
+    
+    freeList(&head);
+return 0;
+  }

@@ -1,0 +1,164 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+
+
+
+
+#define COUNT 3
+
+
+typedef struct{
+    float x;
+    float y;
+}point_t;
+
+typedef struct {
+    point_t a;
+    point_t b;
+}Rectangle;
+
+
+typedef struct node{
+    Rectangle item;
+    struct node *next;
+}sll_node;
+
+
+void pushElement(sll_node **head, Rectangle item) {
+   sll_node *temp =  malloc(sizeof(sll_node));
+   temp->item = item;
+   temp->next = *head;
+   *head = temp;
+}
+
+void popElement(sll_node **head) {
+    if(*head == NULL) {
+        return;
+    }
+    sll_node *temp = *head;
+    *head = (*head)->next;
+    free(temp);
+
+}
+
+void printElements(sll_node *head) {
+
+    sll_node *temp = head;
+
+    while(temp) {
+        printf("Rectangle p1 - x1: %.2lf\n", temp->item.a.x);
+       printf("Rectangle p1 - y1: %.2lf\n", temp->item.a.y);
+       printf("Rectangle p2 - x1: %.2lf\n", temp->item.b.x);
+       printf("Rectangle p1 - x2: %.2lf\n", temp->item.b.y);
+        printf("\n");
+        temp = temp->next;
+    }
+
+
+}
+
+void freeList(sll_node **head){
+
+    sll_node *current = *head;
+
+    while(current != NULL) {
+        sll_node *temp = current;
+        current = current->next;
+        free(temp);
+    }
+    *head = NULL;
+
+}
+
+
+
+Rectangle getNth(sll_node* head, size_t n){
+    sll_node* current = head;
+    while (n--){
+        current = current->next;
+    }
+    return current->item;
+}
+
+double areaRects(sll_node* list, size_t n) {
+    double p1x = list->item.a.x;
+    double p1y = list->item.a.y;
+
+    double p2x = list->item.b.x;
+    double p2y = list->item.b.y;
+
+    double m = sqrt(pow((p2x - p1x), 2) - pow((p2y - p1y), 2));
+    return m;
+}
+
+void deleteNth(sll_node** list, size_t n, double min, double max, double area){
+    if (*list == NULL){
+        return;
+    }
+
+    if(min<=min && min<=max) {
+    if (n == 0){
+        sll_node* temp = *list;
+        *list = (*list)->next;
+        free(temp);
+        return;
+    }
+    sll_node* current = *list;
+    sll_node* prev = current;
+    while (current && n--) {
+        prev = current;
+        current = current->next;
+    }
+    prev->next = current->next;
+    free(current);
+    }
+}
+
+
+
+int main(int argc, char *argv[])
+{
+        srand(time(NULL));
+
+        sll_node *head = NULL;
+
+        for(int i = 0; i < COUNT; i++) {
+            point_t a;
+            a.x = (double)rand()/RAND_MAX*10.0-(-10.0);
+            a.y = (double)rand()/RAND_MAX*10.0-(-10.0);
+            point_t b;
+            b.x = (double)rand()/RAND_MAX*10.0-(-10.0);
+            b.y = (double)rand()/RAND_MAX*10.0-(-10.0);
+
+            Rectangle r;
+            r.a = a;
+            r.b = b;
+
+            pushElement(&head, r);
+
+        }
+            double areas[COUNT];
+            for(int i = 0; i < COUNT; i++) {
+                areas[i] = areaRects(head, i);
+            }
+
+            double min =  20;
+            double max =  30;
+
+            for(int i = 0; i < COUNT; i++) {
+                deleteNth(&head, i, min, max, areas[i]);
+            }
+
+            printElements(head);
+
+
+
+
+
+
+return 0;
+  }
+

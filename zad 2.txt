@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+
+
+    if(argc != 3) {
+        printf(stderr, "Invalid arguments\n");
+        exit(1);
+    }
+
+    FILE *fp1;
+    if((fp1 = fopen(argv[1], "rb")!=NULL)) {
+       fprintf(stderr, "Cant open binary file for read");
+       exit(1);
+    }
+
+    FILE *fp2;
+    if((fp2 = fopen(argv[2], "a"))!=NULL){
+        fprintf(stderr, "Cant open text file for writing");
+        exit(1);
+    }
+
+
+
+    char c[16];
+    while(fread(fp1, sizeof(uint16_t), 1, c)!=EOF) {
+        fprintf(fp2, "%d\n", c);
+    }
+
+
+
+    fclose(fp1);
+    fclose(fp2);
+
+
+
+    return 0;
+}

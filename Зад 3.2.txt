@@ -1,0 +1,11 @@
+void print(struct Node *cll) {
+
+    sll_node *temp = cll;
+
+    while(temp) {
+        printf("%d", (*cll).data);
+        temp = temp->next;
+    }
+
+
+}

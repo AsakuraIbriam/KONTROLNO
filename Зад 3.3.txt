@@ -1,0 +1,18 @@
+struct Node* insertAfter(struct Node **cll, int skipCount, int newElem){
+    struct Node *node = malloc(sizeof(struct Node));
+    if (n == 0 || *cll == NULL){
+        //node->next = *cll;
+        *cll = node;
+        return;
+    }
+    struct Node* current = *cll;
+    struct Node* prev = current;
+    while (current != NULL && skipCount--){
+        prev = current;
+        current = current->next;
+    }
+    prev->next = node;
+    node->next = current;
+
+    return node;
+};
